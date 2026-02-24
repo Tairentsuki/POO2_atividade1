@@ -1,8 +1,14 @@
-Trabalho RH POO II 
-Feito por Guilherme Gomes de Oliveira e Leonardo Dumes de Souza
+# Sistema de RH - POO II
 
-### Diagrama UML
+Trabalho desenvolvido por:
+- Guilherme Gomes de Oliveira  
+- Leonardo Dumes de Souza  
+
 ---
+
+## 📊 Diagrama UML
+
+```plantuml
 @startuml
 
 abstract class Pessoa {
@@ -52,3 +58,6 @@ Setor "1" -- "0..*" Movimentacao
 Setor "1" -- "0..*" Usuario
 
 @enduml
+```
+
+---
