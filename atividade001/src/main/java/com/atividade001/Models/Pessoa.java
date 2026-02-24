@@ -1,16 +1,16 @@
 package com.atividade001.Models;
 
-public class Pessoa {
+public abstract class Pessoa {
     private String nome;
-    private String endereco;
+    private String cpf;
     private String dataDeNascimento;
 
     public Pessoa(String[] strings) {
     }
 
-    public Pessoa(String nome, String endereco, String dataDeNascimento) {
+    public Pessoa(String nome, String cpf, String dataDeNascimento) {
         this.setNome(nome);
-        this.setEndereco(endereco);
+        this.setCpf(cpf);
         this.setDataDeNascimento(dataDeNascimento);
     }
 
@@ -22,12 +22,12 @@ public class Pessoa {
         return this.nome;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getEndereco() {
-        return this.endereco;
+    public String getCpf() {
+        return this.cpf;
     }
 
     public void setDataDeNascimento(String dataDeNascimento) {
@@ -43,7 +43,7 @@ public class Pessoa {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Nome: ").append(nome).append("\n");
-        sb.append("Endereço: ").append(endereco).append("\n");
+        sb.append("Cpf: ").append(cpf).append("\n");
         sb.append("Data de nascimento: ").append(dataDeNascimento).append("\n");
 
         return sb.toString();
@@ -53,7 +53,7 @@ public class Pessoa {
         StringBuilder sb = new StringBuilder();
 
         sb.append(nome).append(',');
-        sb.append(endereco).append(',');
+        sb.append(cpf).append(',');
         sb.append(dataDeNascimento);
 
         return sb.toString();
