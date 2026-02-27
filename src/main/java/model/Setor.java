@@ -1,17 +1,24 @@
 package model;
 
 public class Setor {
+    private int id;
     private String nome;
     private String ramal;
-    private Funcionario funcionario;
 
     public Setor() {
     }
 
-    public Setor(String nome, String ramal, Funcionario funcionario) {
+    public Setor(String nome, String ramal) {
         this.nome = nome;
         this.ramal = ramal;
-        this.funcionario = funcionario;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public void setNome(String nome) {
@@ -28,14 +35,6 @@ public class Setor {
 
     public String getRamal() {
         return this.ramal;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
-
-    public Funcionario getFuncionario() {
-        return this.funcionario;
     }
 
 }

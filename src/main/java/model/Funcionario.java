@@ -1,45 +1,39 @@
 package model;
 
 public class Funcionario extends Pessoa {
-    private float salario_bruto;
-	private float salario_liquido;
-    private String setor;
-    private float descontos;
+	private double SalarioBruto;
+	private String setor;
 
-    public Funcionario(String _nome, String _cpf, String _data) {
-        super(_nome, _cpf, _data);
-    }
-    
-    public float getSalario_bruto() {
-		return salario_bruto;
+	public Funcionario(String _nome, String _cpf, String _data) {
+		super(_nome, _cpf, _data);
 	}
 
-	public void setSalario_bruto(float salario_bruto) {
-		this.salario_bruto = salario_bruto;
+	public void setSalarioBruto(double SalarioBruto) {
+		this.SalarioBruto = SalarioBruto;
 	}
 
-	public float getSalario_liquido() {
-		return salario_liquido;
-	}
-
-	public void setSalario_liquido(float salario_liquido) {
-		this.salario_liquido = salario_liquido;
-	}
-
-	public String getSetor() {
-		return setor;
+	public double getSalarioBruto() {
+		return SalarioBruto;
 	}
 
 	public void setSetor(String setor) {
 		this.setor = setor;
 	}
 
-	public float getDescontos() {
-		return descontos;
+	public String getSetor() {
+		return setor;
 	}
 
-	public void setDescontos(float descontos) {
-		this.descontos = descontos;
+	public double calcularInss() {
+		return 0.0;
+	}
+
+	public double calcularIrpf() {
+		return 0.0;
+	}
+
+	public double calcularSalarioLiquido() {
+		return getSalarioBruto() - calcularInss() - calcularIrpf();
 	}
 
 }

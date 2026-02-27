@@ -1,9 +1,13 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public abstract class Pessoa {
+    private int id;
     private String nome;
     private String cpf;
-    private String dataDeNascimento;
+    private LocalDate dataDeNascimento;
 
     public Pessoa(String[] strings) {
     }
@@ -31,10 +35,14 @@ public abstract class Pessoa {
     }
 
     public void setDataDeNascimento(String dataDeNascimento) {
-        this.dataDeNascimento = dataDeNascimento;
+        try {
+            this.dataDeNascimento = LocalDate.parse(dataDeNascimento);
+        } catch (DateTimeParseException e) {
+            System.err.println("Erro: A data deve estar no formato YYYY-MM-DD. Valor recebido: " + dataDeNascimento);
+        }
     }
 
-    public String getDataDeNascimento() {
+    public LocalDate getDataDeNascimento() {
         return this.dataDeNascimento;
     }
 
@@ -42,6 +50,7 @@ public abstract class Pessoa {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append("id: ").append(id).append("\n");
         sb.append("Nome: ").append(nome).append("\n");
         sb.append("Cpf: ").append(cpf).append("\n");
         sb.append("Data de nascimento: ").append(dataDeNascimento).append("\n");
@@ -52,9 +61,10 @@ public abstract class Pessoa {
     public String toCsv() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append(dataDeNascimento).append(',');
         sb.append(nome).append(',');
         sb.append(cpf).append(',');
-        sb.append(dataDeNascimento);
+        sb.append(dataDeNascimento != null ? dataDeNascimento.toString() : "");
 
         return sb.toString();
     }
