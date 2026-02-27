@@ -6,7 +6,7 @@ Trabalho desenvolvido por:
 
 ---
 
-## 📊 Diagrama UML
+## Diagrama UML
 
 ```plantuml
 @startuml
