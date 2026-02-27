@@ -41,12 +41,6 @@ class Movimentacao {
     - descricao : String
 }
 
-class Usuario {
-    - id : int
-    - login : String
-    - senha : String
-}
-
 enum TipoMovimentacao {
     RECEITA
     DESPESA
