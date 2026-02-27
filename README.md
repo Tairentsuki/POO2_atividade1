@@ -16,10 +16,12 @@ abstract class Pessoa {
     - nome : String
     - cpf : String
     - dataNascimento : LocalDate
+    - sexo: String
 }
 
 class Funcionario {
     - id : int
+    - formacao: String
     - salarioBruto : double
     - setor : Setor
     + calcularInss() : double
@@ -39,6 +41,8 @@ class Movimentacao {
     - data : LocalDateTime
     - valor : double
     - descricao : String
+    - setor : Setor
+    - funcionario : Funcionario
 }
 
 enum TipoMovimentacao {
@@ -46,10 +50,12 @@ enum TipoMovimentacao {
     DESPESA
 }
 
+
 Pessoa <|-- Funcionario
-Setor "1" -- "0..*" Funcionario
-Setor "1" -- "0..*" Movimentacao
-Setor "1" -- "0..*" Usuario
+
+Setor "1" o-- "0..*" Funcionario 
+Setor "1" o-- "0..*" Movimentacao 
+Funcionario "1" o-- "0..*" Movimentacao 
 
 @enduml
 ```
