@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Sistema</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-slate-800 text-white flex flex-col shadow-lg">
+        <div class="p-6 text-2xl font-bold border-b border-slate-700 text-center">
+            Painel
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a href="#" class="block px-4 py-3 bg-blue-600 rounded-lg font-medium transition hover:bg-blue-500">
+                 Gráficos
+            </a>
+            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                 Listar Funcionários
+            </a>
+            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                 Listar Pessoas
+            </a>
+            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                 Listar Setores
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Gestão - Gráficos</h1>
+            <p class="text-gray-500">Acompanhamento de métricas do sistema</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <div id="grafico_setores" class="w-full h-80"></div>
+            </div>
+            
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <div id="grafico_salarios" class="w-full h-80"></div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
+                <div id="grafico_crescimento" class="w-full h-80"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Carrega os pacotes básicos do Google Charts
+        google.charts.load('current', {'packages':['corechart']});
+        // Define qual função chamar quando a API terminar de carregar
+        google.charts.setOnLoadCallback(desenharGraficos);
+
+        function desenharGraficos() {
+            
+            // --- 1. Gráfico de Rosca (Funcionários por Setor) ---
+            const dataSetores = google.visualization.arrayToDataTable([
+                ['Setor', 'Quantidade'],
+                ['Tecnologia', 12],
+                ['Recursos Humanos', 4],
+                ['Vendas', 8],
+                ['Administrativo', 5]
+            ]);
+
+            const optionsSetores = {
+                title: 'Distribuição de Funcionários',
+                pieHole: 0.4, // Transforma a pizza em rosca
+                colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                chartArea: {width: '80%', height: '80%'}
+            };
+
+            const chartSetores = new google.visualization.PieChart(document.getElementById('grafico_setores'));
+            chartSetores.draw(dataSetores, optionsSetores);
+
+
+            // --- 2. Gráfico de Colunas (Média Salarial) ---
+            const dataSalarios = google.visualization.arrayToDataTable([
+                ['Setor', 'Média (R$)'],
+                ['Tecnologia', 7500],
+                ['RH', 4200],
+                ['Vendas', 5800],
+                ['Admin', 3900]
+            ]);
+
+            const optionsSalarios = {
+                title: 'Média Salarial por Setor',
+                colors: ['#6366f1'],
+                legend: { position: 'none' },
+                vAxis: { format: 'currency' }
+            };
+
+            const chartSalarios = new google.visualization.ColumnChart(document.getElementById('grafico_salarios'));
+            chartSalarios.draw(dataSalarios, optionsSalarios);
+
+
+            // --- 3. Gráfico de Linhas (Crescimento/Contratações) ---
+            const dataCrescimento = google.visualization.arrayToDataTable([
+                ['Mês', 'Contratações'],
+                ['Jan',  3],
+                ['Fev',  6],
+                ['Mar',  4],
+                ['Abr',  9],
+                ['Mai',  5],
+                ['Jun',  8]
+            ]);
+
+            const optionsCrescimento = {
+                title: 'Evolução de Contratações no Semestre',
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['#0ea5e9']
+            };
+
+            const chartCrescimento = new google.visualization.LineChart(document.getElementById('grafico_crescimento'));
+            chartCrescimento.draw(dataCrescimento, optionsCrescimento);
+        }
+
+        // Garante que os gráficos sejam redesenhados e se ajustem se o usuário redimensionar a janela
+        window.addEventListener('resize', desenharGraficos);
+    </script>
+</body>
+</html>

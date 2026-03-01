@@ -1,0 +1,9 @@
+model\Pessoa.class
+model\Movimentacao.class
+model\Funcionario.class
+com\atividade001\Main.class
+model\Setor.class
+model\TipoMovimentacao.class
+services\DataFakerGenerator.class
+services\GeradorCsv.class
+services\DataFakerGenerator$RegistroFuncionario.class
