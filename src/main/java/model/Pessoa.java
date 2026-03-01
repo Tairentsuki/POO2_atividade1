@@ -5,25 +5,36 @@ import java.time.format.DateTimeParseException;
 
 public abstract class Pessoa {
     private int id;
-    private String nome;
+    private String nomeCompleto;
     private String cpf;
     private LocalDate dataDeNascimento;
+    private String sexo;
 
     public Pessoa(String[] strings) {
     }
 
-    public Pessoa(String nome, String cpf, String dataDeNascimento) {
-        this.setNome(nome);
+    public Pessoa(int _id, String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo) {
+        this.setId(_id);
+        this.setNomeCompleto(nomeCompleto);
         this.setCpf(cpf);
         this.setDataDeNascimento(dataDeNascimento);
+        this.setSexo(sexo);
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
     }
 
-    public String getNome() {
-        return this.nome;
+    public String getNomeCompleto() {
+        return this.nomeCompleto;
+    }
+
+    public void setId(int _id) {
+        this.id = _id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public void setCpf(String cpf) {
@@ -34,9 +45,9 @@ public abstract class Pessoa {
         return this.cpf;
     }
 
-    public void setDataDeNascimento(String dataDeNascimento) {
+    public void setDataDeNascimento(LocalDate dataDeNascimento) {
         try {
-            this.dataDeNascimento = LocalDate.parse(dataDeNascimento);
+            this.dataDeNascimento = dataDeNascimento;
         } catch (DateTimeParseException e) {
             System.err.println("Erro: A data deve estar no formato YYYY-MM-DD. Valor recebido: " + dataDeNascimento);
         }
@@ -46,25 +57,34 @@ public abstract class Pessoa {
         return this.dataDeNascimento;
     }
 
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getSexo() {
+        return this.sexo;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("id: ").append(id).append("\n");
-        sb.append("Nome: ").append(nome).append("\n");
+        sb.append("nomeCompleto: ").append(nomeCompleto).append("\n");
         sb.append("Cpf: ").append(cpf).append("\n");
         sb.append("Data de nascimento: ").append(dataDeNascimento).append("\n");
-
+        sb.append("Sexo: ").append(sexo).append("\n");
         return sb.toString();
     }
 
     public String toCsv() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append(id).append(',');
+        sb.append(nomeCompleto).append(',');
         sb.append(dataDeNascimento).append(',');
-        sb.append(nome).append(',');
         sb.append(cpf).append(',');
-        sb.append(dataDeNascimento != null ? dataDeNascimento.toString() : "");
+        sb.append(sexo != null ? sexo : "");
 
         return sb.toString();
     }
