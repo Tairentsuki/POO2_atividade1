@@ -1,5 +1,5 @@
 package model;
-
+import java.time.Period;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -63,6 +63,11 @@ public abstract class Pessoa {
 
     public String getSexo() {
         return this.sexo;
+    }
+    public int calcularIdade(){
+        LocalDate hoje = LocalDate.now();
+        int idade = Period.between(this.dataDeNascimento, hoje).getYears();
+        return idade;
     }
 
     @Override
