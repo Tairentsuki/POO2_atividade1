@@ -1,4 +1,4 @@
-package services;
+﻿package services;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -7,6 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+
+import model.Funcionario;
 
 public class GeradorCsv {
     private static final int BUFFER_SIZE = 1 << 20; // 1 MB
@@ -17,14 +19,7 @@ public class GeradorCsv {
         Path caminho = Path.of(nomeDoArquivo);
 
         try (BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(
-                        new BufferedOutputStream(
-                                Files.newOutputStream(
-                                        caminho,
-                                        StandardOpenOption.CREATE,
-                                        StandardOpenOption.TRUNCATE_EXISTING,
-                                        StandardOpenOption.WRITE),
-                                BUFFER_SIZE),
+                new OutputStreamWriter(new BufferedOutputStream(Files.newOutputStream(caminho, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), BUFFER_SIZE),
                         StandardCharsets.UTF_8),
                 BUFFER_SIZE)) {
             writer.write("IdFuncionario,NomeCompleto,DataNascimento,CPF,Sexo,SalarioBruto,Cargo,idSetor,Setor,Ramal");
@@ -32,8 +27,8 @@ public class GeradorCsv {
 
             StringBuilder linha = new StringBuilder(192);
             for (long i = 0; i < quantidade; i++) {
-                DataFakerGenerator.RegistroFuncionario registro = DataFakerGenerator.gerarRegistroFuncionario();
-                appendLinhaCsvFuncionario(linha, registro);
+                Funcionario funcionario = DataFakerGenerator.gerarFuncionario();
+                appendLinhaCsvFuncionario(linha, funcionario);
                 writer.append(linha);
                 writer.newLine();
 
@@ -49,20 +44,20 @@ public class GeradorCsv {
         }
     }
 
-    private static void appendLinhaCsvFuncionario(StringBuilder linha, DataFakerGenerator.RegistroFuncionario registro) {
+    private static void appendLinhaCsvFuncionario(StringBuilder linha, Funcionario funcionario) {
         linha.setLength(0);
 
-        linha.append(registro.getIdFuncionario()).append(',');
-        linha.append(registro.getNomeCompleto()).append(',');
-        linha.append(registro.getDataNascimento()).append(',');
-        linha.append(registro.getCpf()).append(',');
-        linha.append(registro.getSexo()).append(',');
-        appendValorComDuasCasas(linha, registro.getSalarioBruto());
+        linha.append(funcionario.getId()).append(',');
+        linha.append(funcionario.getNomeCompleto()).append(',');
+        linha.append(funcionario.getDataDeNascimento()).append(',');
+        linha.append(funcionario.getCpf()).append(',');
+        linha.append(funcionario.getSexo()).append(',');
+        appendValorComDuasCasas(linha, funcionario.getSalarioBruto());
         linha.append(',');
-        linha.append(registro.getFormacao()).append(',');
-        linha.append(registro.getIdSetor()).append(',');
-        linha.append(registro.getNomeSetor()).append(',');
-        linha.append(registro.getRamal());
+        linha.append(funcionario.getFormacao()).append(',');
+        linha.append(funcionario.getSetor().getId()).append(',');
+        linha.append(funcionario.getSetor().getNome()).append(',');
+        linha.append(funcionario.getSetor().getRamal());
     }
 
     private static void appendValorComDuasCasas(StringBuilder destino, double valor) {
