@@ -1,16 +1,29 @@
-package model;
+package com.atividade001.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+@Table(name = "movimentacao")
 public class Movimentacao {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private TipoMovimentacao tipo;
     private LocalDateTime data;
     private double valor;
     private String descricao;
-    
+
+    @ManyToOne
     private Setor setor;
+    @ManyToOne
     private Funcionario funcionario;
 
     public Movimentacao() {
@@ -25,7 +38,6 @@ public class Movimentacao {
         this.setor = this.getSetor();
         this.funcionario = this.getFuncionario();
     }
-
 
     public int getId() {
         return id;

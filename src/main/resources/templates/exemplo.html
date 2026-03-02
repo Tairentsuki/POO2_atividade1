@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Completa de Funcionarios</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px;
+        }
+
+        .summary {
+            margin-bottom: 16px;
+        }
+
+        .summary h1 {
+            margin: 0 0 8px;
+        }
+
+        .summary p {
+            margin: 0;
+        }
+
+        .table-wrapper {
+            background: #ffffff;
+            border: 1px solid #dbe3f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #e8eef9;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9fbff;
+        }
+
+        .empty-row td {
+            text-align: center;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="summary">
+            <h1>Lista de Funcionarios</h1>
+            <p th:text="|Total listado do banco: ${totalFuncionarios}|">Total listado do banco: 0</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Salario</th>
+                        <th>Setor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="f : ${funcionarios}">
+                        <td th:text="${f.id}">1</td>
+                        <td th:text="${f.nomeCompleto}">Nome</td>
+                        <td th:text="${f.cpf}">000.000.000-00</td>
+                        <td th:text="|R$ ${#numbers.formatDecimal(f.salarioBruto, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</td>
+                        <td th:text="${f.setor != null ? f.setor.nome : 'Sem setor'}">Setor</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(funcionarios)}" class="empty-row">
+                        <td colspan="5">Nenhum funcionario encontrado no banco.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

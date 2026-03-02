@@ -1,9 +1,18 @@
-package model;
+package com.atividade001.model;
+
 import java.time.Period;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@MappedSuperclass
 public abstract class Pessoa {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nomeCompleto;
     private String cpf;
@@ -11,6 +20,16 @@ public abstract class Pessoa {
     private String sexo;
 
     public Pessoa(String[] strings) {
+    }
+
+    protected Pessoa() {
+    }
+
+    public Pessoa(String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo) {
+        this.setNomeCompleto(nomeCompleto);
+        this.setCpf(cpf);
+        this.setDataDeNascimento(dataDeNascimento);
+        this.setSexo(sexo);
     }
 
     public Pessoa(int _id, String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo) {
@@ -64,7 +83,8 @@ public abstract class Pessoa {
     public String getSexo() {
         return this.sexo;
     }
-    public int calcularIdade(){
+
+    public int calcularIdade() {
         LocalDate hoje = LocalDate.now();
         int idade = Period.between(this.dataDeNascimento, hoje).getYears();
         return idade;

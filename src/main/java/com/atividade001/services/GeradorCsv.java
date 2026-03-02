@@ -1,4 +1,4 @@
-﻿package services;
+﻿package com.atividade001.services;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-import model.Funcionario;
+import com.atividade001.model.Funcionario;
 
 public class GeradorCsv {
     private static final int BUFFER_SIZE = 1 << 20; // 1 MB

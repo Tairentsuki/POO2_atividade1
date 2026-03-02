@@ -1,18 +1,39 @@
-package model;
+package com.atividade001.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToMany;
+
+@Entity
+@Table(name = "setor")
 public class Setor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
     private String ramal;
 
+    @OneToMany(mappedBy = "setor")
     private List<Funcionario> funcionarios;
+    @OneToMany(mappedBy = "setor")
     private List<Movimentacao> movimentacoes;
 
     public Setor() {
+        this.funcionarios = new ArrayList<>();
+        this.movimentacoes = new ArrayList<>();
+    }
+
+    public Setor(String nome, String ramal) {
+        this();
+        this.nome = nome;
+        this.ramal = ramal;
     }
 
     public Setor(int _id, String _nome, String _ramal) {

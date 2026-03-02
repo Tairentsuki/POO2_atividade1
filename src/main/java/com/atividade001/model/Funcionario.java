@@ -1,11 +1,29 @@
-package model;
+package com.atividade001.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+@Table(name = "funcionario")
 public class Funcionario extends Pessoa {
 	private double salarioBruto;
 	private String formacao;
+	@ManyToOne(cascade = jakarta.persistence.CascadeType.ALL)
 	private Setor setor;
+
+	public Funcionario() {
+		super();
+	}
+
+	public Funcionario(String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo, double salarioBruto, String formacao, Setor setor) {
+		super(nomeCompleto, cpf, dataDeNascimento, sexo);
+		this.setSalarioBruto(salarioBruto);
+		this.setFormacao(formacao);
+		this.setSetor(setor);
+	}
 
 	public Funcionario(int _id, String _nome, String _cpf, LocalDate _data_nascimento, String _sexo) {
 		super(_id, _nome, _cpf, _data_nascimento, _sexo);

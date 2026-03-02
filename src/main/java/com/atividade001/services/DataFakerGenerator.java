@@ -1,10 +1,10 @@
-package services;
+package com.atividade001.services;
 
 import java.time.LocalDate;
 import java.util.Locale;
 
-import model.Funcionario;
-import model.Setor;
+import com.atividade001.model.Funcionario;
+import com.atividade001.model.Setor;
 import net.datafaker.Faker;
 
 public class DataFakerGenerator {
@@ -14,7 +14,14 @@ public class DataFakerGenerator {
     private static int contadorSetor = 1;
 
     public static Funcionario gerarFuncionario() {
-        // Gerar dados do funcionário
+        return criarFuncionario(true);
+    }
+
+    public static Funcionario gerarFuncionarioPersistivel() {
+        return criarFuncionario(false);
+    }
+
+    private static Funcionario criarFuncionario(boolean incluirIds) {
         String areaAtuacao = faker.job().field();
         String posicao = faker.job().position();
         String formacao = posicao + " de " + areaAtuacao;
@@ -27,15 +34,22 @@ public class DataFakerGenerator {
         String sexo = isMasculino ? "Masculino" : "Feminino";
         String cpf = faker.cpf().valid();
 
-        // Gerar dados do setor
-        int idSetor = contadorSetor++;
-        String ramal = String.valueOf(idSetor % 9000 + 1000);
-        Setor setor = new Setor(idSetor, areaAtuacao, ramal);
+        Setor setor;
+        if (incluirIds) {
+            int proximoSetor = contadorSetor++;
+            String ramal = String.valueOf(proximoSetor % 9000 + 1000);
+            setor = new Setor(proximoSetor, areaAtuacao, ramal);
+        } else {
+            String ramal = String.valueOf(faker.number().numberBetween(1000, 10000));
+            setor = new Setor(areaAtuacao, ramal);
+        }
 
-        // Gerar ID do funcionário
-        int idFuncionario = contadorFuncionario++;
+        if (incluirIds) {
+            int proximoFuncionario = contadorFuncionario++;
+            return new Funcionario(proximoFuncionario, nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor);
+        }
 
-        return new Funcionario(idFuncionario, nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor);
+        return new Funcionario(nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor);
     }
 
     private static double gerarSalarioBruto(String formacao) {
