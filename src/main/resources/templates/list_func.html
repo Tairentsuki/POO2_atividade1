@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Funcionários - Painel</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-slate-800 text-white flex flex-col shadow-lg">
+        <div class="p-6 text-2xl font-bold border-b border-slate-700 text-center">
+            Painel Admin
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Gráficos
+            </a>
+            <a href="#" class="block px-4 py-3 bg-blue-600 rounded-lg font-medium transition hover:bg-blue-500">
+                Listar Funcionários
+            </a>
+            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Listar Pessoas
+            </a>
+            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Listar Setores
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="mb-8 flex justify-between items-end">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Funcionários</h1>
+                <p class="text-gray-500">Listagem completa do quadro de colaboradores</p>
+            </div>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-600 font-semibold">
+                        <tr>
+                            <th scope="col" class="px-6 py-4">ID</th>
+                            <th scope="col" class="px-6 py-4">Nome Completo</th>
+                            <th scope="col" class="px-6 py-4">Idade</th>
+                            <th scope="col" class="px-6 py-4">Data Nasc.</th>
+                            <th scope="col" class="px-6 py-4">CPF</th>
+                            <th scope="col" class="px-6 py-4">Sexo</th>
+                            <th scope="col" class="px-6 py-4">Salário Bruto</th>
+                            <th scope="col" class="px-6 py-4">Cargo</th>
+                            <th scope="col" class="px-6 py-4">Setor (ID)</th>
+                            <th scope="col" class="px-6 py-4">Ramal</th>
+                            <th scope="col" class="px-6 py-4">Data Admissão</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-gray-700">
+                        <tr th:each="func : ${funcionarios}" class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 font-medium text-gray-900" th:text="${func.idFuncionario}">1</td>
+                            <td class="px-6 py-4" th:text="${func.nomeCompleto}">João da Silva</td>
+                            <td class="px-6 py-4" th:text="${func.idade} + ' anos'">30 anos</td>
+                            <td class="px-6 py-4" th:text="${#temporals.format(func.dataNascimento, 'dd/MM/yyyy')}">15/10/1993</td>
+                            <td class="px-6 py-4" th:text="${func.cpf}">123.456.789-00</td>
+                            <td class="px-6 py-4" th:text="${func.sexo}">M</td>
+                            <td class="px-6 py-4 font-medium text-green-600" th:text="|R$ ${#numbers.formatDecimal(func.salarioBruto, 1, 'POINT', 2, 'COMMA')}|">R$ 5.500,00</td>
+                            <td class="px-6 py-4" th:text="${func.cargo}">Desenvolvedor</td>
+                            <td class="px-6 py-4" th:text="${func.setor} + ' (' + ${func.idSetor} + ')'">TI (10)</td>
+                            <td class="px-6 py-4" th:text="${func.ramal}">8080</td>
+                            <td class="px-6 py-4" th:text="${#temporals.format(func.dataAdmissao, 'dd/MM/yyyy')}">01/02/2020</td>
+                        </tr>
+                        
+                        <tr th:if="${#lists.isEmpty(funcionarios)}">
+                            <td colspan="11" class="px-6 py-8 text-center text-gray-500">
+                                Nenhum funcionário cadastrado ou lista não enviada pelo Controller.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
