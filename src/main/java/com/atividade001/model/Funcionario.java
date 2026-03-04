@@ -3,15 +3,15 @@ package com.atividade001.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "funcionario")
 public class Funcionario extends Pessoa {
 	private double salarioBruto;
 	private String formacao;
-	@ManyToOne(cascade = jakarta.persistence.CascadeType.ALL)
+	@ManyToOne
 	private Setor setor;
 	private LocalDate dataAdmissao;
 

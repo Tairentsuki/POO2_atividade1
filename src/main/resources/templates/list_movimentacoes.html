@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Movimentações - Painel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-slate-800 text-white flex flex-col shadow-lg">
+        <div class="p-6 text-2xl font-bold border-b border-slate-700 text-center">
+            Painel Admin
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a th:href="@{/graficos}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Gráficos
+            </a>
+            <a th:href="@{/funcionarios}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Listar Funcionários
+            </a>
+            <a th:href="@{/pessoas}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Listar Pessoas
+            </a>
+            <a th:href="@{/setores}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Listar Setores
+            </a>
+            <a th:href="@{/movimentacoes}" class="block px-4 py-3 bg-blue-600 rounded-lg font-medium transition hover:bg-blue-500">
+                Listar Movimentações
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Movimentações</h1>
+            <p class="text-gray-500" th:text="|Total listado: ${totalMovimentacoes}|">Total listado: 0</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-600 font-semibold">
+                        <tr>
+                            <th class="px-6 py-4">ID</th>
+                            <th class="px-6 py-4">Tipo</th>
+                            <th class="px-6 py-4">Data</th>
+                            <th class="px-6 py-4">Valor</th>
+                            <th class="px-6 py-4">Descrição</th>
+                            <th class="px-6 py-4">Setor</th>
+                            <th class="px-6 py-4">Funcionário</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-gray-700">
+                        <tr th:each="mov : ${movimentacoes}" class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 font-medium text-gray-900" th:text="${mov.id}">1</td>
+                            <td class="px-6 py-4" th:text="${mov.tipo}">DESPESA</td>
+                            <td class="px-6 py-4" th:text="${#temporals.format(mov.data, 'dd/MM/yyyy HH:mm')}">01/03/2026 10:30</td>
+                            <td class="px-6 py-4 font-medium"
+                                th:classappend="${mov.tipo.name() == 'RECEITA'} ? ' text-green-600' : ' text-red-600'"
+                                th:text="|R$ ${#numbers.formatDecimal(mov.valor, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</td>
+                            <td class="px-6 py-4" th:text="${mov.descricao}">Descrição</td>
+                            <td class="px-6 py-4" th:text="${mov.setor != null ? mov.setor.nome : ''}">Setor</td>
+                            <td class="px-6 py-4" th:text="${mov.funcionario != null ? mov.funcionario.nomeCompleto : ''}">Funcionário</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(movimentacoes)}">
+                            <td colspan="7" class="px-6 py-8 text-center text-gray-500">
+                                Nenhuma movimentação encontrada.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

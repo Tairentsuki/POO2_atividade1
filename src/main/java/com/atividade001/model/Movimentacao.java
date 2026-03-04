@@ -3,11 +3,11 @@ package com.atividade001.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "movimentacao")
@@ -29,14 +29,23 @@ public class Movimentacao {
     public Movimentacao() {
     }
 
+    public Movimentacao(TipoMovimentacao tipo, LocalDateTime data, double valor, String descricao, Setor setor, Funcionario funcionario) {
+        this.tipo = tipo;
+        this.data = data;
+        this.valor = valor;
+        this.descricao = descricao;
+        this.setor = setor;
+        this.funcionario = funcionario;
+    }
+
     public Movimentacao(int id, TipoMovimentacao tipo, LocalDateTime data, double valor, String descricao, Setor setor, Funcionario funcionario) {
-        this.id = this.getId();
-        this.tipo = this.getTipo();
-        this.data = this.getData();
-        this.valor = this.getValor();
-        this.descricao = this.getDescricao();
-        this.setor = this.getSetor();
-        this.funcionario = this.getFuncionario();
+        this.id = id;
+        this.tipo = tipo;
+        this.data = data;
+        this.valor = valor;
+        this.descricao = descricao;
+        this.setor = setor;
+        this.funcionario = funcionario;
     }
 
     public int getId() {

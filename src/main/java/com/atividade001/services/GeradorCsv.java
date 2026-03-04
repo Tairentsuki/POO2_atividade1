@@ -1,4 +1,4 @@
-﻿package com.atividade001.services;
+package com.atividade001.services;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -11,15 +11,22 @@ import java.nio.file.StandardOpenOption;
 import com.atividade001.model.Funcionario;
 
 public class GeradorCsv {
-    private static final int BUFFER_SIZE = 1 << 20; // 1 MB
+    private static final int BUFFER_SIZE = 1 << 20;
     private static final long PROGRESS_INTERVAL = 1_000_000L;
 
     public static void exportarFuncionarios(long quantidade, String nomeDoArquivo) {
-        System.out.println("Iniciando a geracao de " + quantidade + " registros...");
+        System.out.println("Iniciando a geração de " + quantidade + " registros...");
         Path caminho = Path.of(nomeDoArquivo);
 
         try (BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(new BufferedOutputStream(Files.newOutputStream(caminho, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), BUFFER_SIZE),
+                new OutputStreamWriter(
+                        new BufferedOutputStream(
+                                Files.newOutputStream(
+                                        caminho,
+                                        StandardOpenOption.CREATE,
+                                        StandardOpenOption.TRUNCATE_EXISTING,
+                                        StandardOpenOption.WRITE),
+                                BUFFER_SIZE),
                         StandardCharsets.UTF_8),
                 BUFFER_SIZE)) {
             writer.write("IdFuncionario,NomeCompleto,DataNascimento,CPF,Sexo,SalarioBruto,Cargo,idSetor,Setor,Ramal");

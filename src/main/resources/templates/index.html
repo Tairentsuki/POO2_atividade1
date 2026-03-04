@@ -16,17 +16,20 @@
             Painel
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="#" class="block px-4 py-3 bg-blue-600 rounded-lg font-medium transition hover:bg-blue-500">
+            <a th:href="@{/graficos}" class="block px-4 py-3 bg-blue-600 rounded-lg font-medium transition hover:bg-blue-500">
                  Gráficos
             </a>
-            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+            <a th:href="@{/funcionarios}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
                  Listar Funcionários
             </a>
-            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+            <a th:href="@{/pessoas}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
                  Listar Pessoas
             </a>
-            <a href="#" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+            <a th:href="@{/setores}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
                  Listar Setores
+            </a>
+            <a th:href="@{/movimentacoes}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                 Listar Movimentações
             </a>
         </nav>
     </aside>
