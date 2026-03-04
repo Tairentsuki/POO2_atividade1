@@ -2,6 +2,7 @@ package com.atividade001.services;
 
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.atividade001.model.Funcionario;
 import com.atividade001.model.Setor;
@@ -33,6 +34,7 @@ public class DataFakerGenerator {
         LocalDate dataNascimento = faker.timeAndDate().birthday(18, 65);
         String sexo = isMasculino ? "Masculino" : "Feminino";
         String cpf = faker.cpf().valid();
+        LocalDate dataAdmissao = gerarDataAdmissao(dataNascimento);
 
         Setor setor;
         if (incluirIds) {
@@ -46,16 +48,30 @@ public class DataFakerGenerator {
 
         if (incluirIds) {
             int proximoFuncionario = contadorFuncionario++;
-            return new Funcionario(proximoFuncionario, nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor);
+            return new Funcionario(proximoFuncionario, nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor, dataAdmissao);
         }
 
-        return new Funcionario(nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor);
+        return new Funcionario(nomeCompleto, cpf, dataNascimento, sexo, salarioBruto, formacao, setor, dataAdmissao);
     }
 
     private static double gerarSalarioBruto(String formacao) {
         double salarioBase = faker.number().randomDouble(2, 1412, 6000);
         double multiplicador = calcularMultiplicador(formacao);
         return Math.round((salarioBase * multiplicador) * 100.0) / 100.0;
+    }
+
+    private static LocalDate gerarDataAdmissao(LocalDate dataNascimento) {
+        LocalDate dataMinimaAdmissao = dataNascimento.plusYears(18);
+        LocalDate hoje = LocalDate.now();
+
+        if (dataMinimaAdmissao.isAfter(hoje)) {
+            return hoje;
+        }
+
+        long inicioEpochDay = dataMinimaAdmissao.toEpochDay();
+        long fimEpochDay = hoje.toEpochDay();
+        long diaSorteado = ThreadLocalRandom.current().nextLong(inicioEpochDay, fimEpochDay + 1);
+        return LocalDate.ofEpochDay(diaSorteado);
     }
 
     private static double calcularMultiplicador(String formacao) {

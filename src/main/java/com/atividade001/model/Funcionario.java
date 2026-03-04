@@ -13,16 +13,18 @@ public class Funcionario extends Pessoa {
 	private String formacao;
 	@ManyToOne(cascade = jakarta.persistence.CascadeType.ALL)
 	private Setor setor;
+	private LocalDate dataAdmissao;
 
 	public Funcionario() {
 		super();
 	}
 
-	public Funcionario(String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo, double salarioBruto, String formacao, Setor setor) {
+	public Funcionario(String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo, double salarioBruto, String formacao, Setor setor, LocalDate dataAdmissao) {
 		super(nomeCompleto, cpf, dataDeNascimento, sexo);
 		this.setSalarioBruto(salarioBruto);
 		this.setFormacao(formacao);
 		this.setSetor(setor);
+		this.setDataAdmissao(dataAdmissao);
 	}
 
 	public Funcionario(int _id, String _nome, String _cpf, LocalDate _data_nascimento, String _sexo) {
@@ -30,11 +32,12 @@ public class Funcionario extends Pessoa {
 
 	}
 
-	public Funcionario(int _id, String _nome, String _cpf, LocalDate _data_nascimento, String _sexo, double _salarioBruto, String _formacao, Setor _setor) {
+	public Funcionario(int _id, String _nome, String _cpf, LocalDate _data_nascimento, String _sexo, double _salarioBruto, String _formacao, Setor _setor, LocalDate _dataAdmissao) {
 		super(_id, _nome, _cpf, _data_nascimento, _sexo);
 		this.setSalarioBruto(_salarioBruto);
 		this.setFormacao(_formacao);
 		this.setSetor(_setor);
+		this.setDataAdmissao(_dataAdmissao);
 	}
 
 	public void setSalarioBruto(double _salarioBruto) {
@@ -59,6 +62,14 @@ public class Funcionario extends Pessoa {
 
 	public Setor getSetor() {
 		return setor;
+	}
+
+	public LocalDate getDataAdmissao() {
+		return this.dataAdmissao;
+	}
+
+	public void setDataAdmissao(LocalDate _dataAdmissao) {
+		this.dataAdmissao = _dataAdmissao;
 	}
 
 	public double calcularInss() {
@@ -97,6 +108,7 @@ public class Funcionario extends Pessoa {
 		sb.append(super.toCsv()).append(",");
 		sb.append(salarioBruto).append(",");
 		sb.append(formacao).append(",");
+		sb.append(dataAdmissao).append(",");
 		sb.append(setor.toCsv());
 
 		return sb.toString();

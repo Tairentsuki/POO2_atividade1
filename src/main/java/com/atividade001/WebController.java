@@ -29,6 +29,12 @@ public class WebController {
         return "list_func";
     }
 
+    @GetMapping("/setor")
+        public String listSetor(Model setor) {
+            adicionarFuncionariosAoModelo(setor);
+            return "list_setor";
+        }
+
     @GetMapping({ "/exemplo", "/exemplo.html" })
     public String exemplo(Model model) {
         adicionarFuncionariosAoModelo(model);
