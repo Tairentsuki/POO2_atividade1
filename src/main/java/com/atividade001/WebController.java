@@ -36,6 +36,14 @@ public class WebController {
         model.addAttribute("totalMovimentacoes", movimentacaoRepository.count());
         return "index";
     }
+    @GetMapping({ "/estatistica" })
+    public String estatistica(Model model) {
+        model.addAttribute("totalFuncionarios", funcionarioRepository.count());
+        model.addAttribute("totalSetores", setorRepository.count());
+        model.addAttribute("totalMovimentacoes", movimentacaoRepository.count());
+        return "estatistica";
+    }
+
 
     @GetMapping("/funcionarios")
     public String listFuncionarios(Model model) {
