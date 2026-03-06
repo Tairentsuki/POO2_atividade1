@@ -1,7 +1,13 @@
 package com.atividade001;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -105,9 +111,45 @@ public class WebController {
     }
     @GetMapping({ "/estatistica" })
     public String estatistica(Model model) {
-        model.addAttribute("totalFuncionarios", funcionarioRepository.count());
+        List<Funcionario> funcionarios = funcionarioRepository.findAll();
+        LocalDate hoje = LocalDate.now();
+
+        List<Double> salarios = funcionarios.stream()
+                .map(Funcionario::getSalarioBruto)
+                .toList();
+
+        List<Double> idades = funcionarios.stream()
+                .map(Funcionario::getDataDeNascimento)
+                .filter(Objects::nonNull)
+                .map(dataNascimento -> (double) Period.between(dataNascimento, hoje).getYears())
+                .toList();
+
+        EstatisticaResumo resumoSalario = calcularResumo(salarios);
+        EstatisticaResumo resumoIdade = calcularResumo(idades);
+
+        model.addAttribute("totalFuncionarios", funcionarios.size());
+        model.addAttribute("funcionariosAtivos", funcionarios.size());
         model.addAttribute("totalSetores", setorRepository.count());
         model.addAttribute("totalMovimentacoes", movimentacaoRepository.count());
+
+        model.addAttribute("salarioMedia", resumoSalario.media());
+        model.addAttribute("salarioMediana", resumoSalario.mediana());
+        model.addAttribute("salarioModa", resumoSalario.moda());
+        model.addAttribute("salarioDesvioPadrao", resumoSalario.desvioPadrao());
+        model.addAttribute("salarioVariancia", resumoSalario.variancia());
+        model.addAttribute("salarioMinimo", resumoSalario.minimo());
+        model.addAttribute("salarioMaximo", resumoSalario.maximo());
+        model.addAttribute("folhaTotal", resumoSalario.total());
+
+        model.addAttribute("idadeMedia", resumoIdade.media());
+        model.addAttribute("idadeMediana", resumoIdade.mediana());
+        model.addAttribute("idadeModa", resumoIdade.moda());
+        model.addAttribute("idadeDesvioPadrao", resumoIdade.desvioPadrao());
+        model.addAttribute("idadeVariancia", resumoIdade.variancia());
+        model.addAttribute("idadeMinima", resumoIdade.minimo());
+        model.addAttribute("idadeMaxima", resumoIdade.maximo());
+        model.addAttribute("idadeAmplitude", resumoIdade.amplitude());
+
         return "estatistica";
     }
 
@@ -155,5 +197,66 @@ public class WebController {
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";
+    }
+
+    private EstatisticaResumo calcularResumo(List<Double> valoresEntrada) {
+        if (valoresEntrada == null || valoresEntrada.isEmpty()) {
+            return new EstatisticaResumo(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        }
+
+        List<Double> valores = new ArrayList<>(valoresEntrada);
+        Collections.sort(valores);
+
+        int n = valores.size();
+        double soma = valores.stream().mapToDouble(Double::doubleValue).sum();
+        double media = soma / n;
+        double mediana = (n % 2 == 0)
+                ? (valores.get(n / 2 - 1) + valores.get(n / 2)) / 2.0
+                : valores.get(n / 2);
+
+        Map<Double, Integer> frequencias = new HashMap<>();
+        for (Double valor : valores) {
+            double chave = arredondar(valor, 2);
+            frequencias.merge(chave, 1, Integer::sum);
+        }
+
+        int maiorFrequencia = frequencias.values().stream().mapToInt(Integer::intValue).max().orElse(1);
+        double moda = mediana;
+        if (maiorFrequencia > 1) {
+            moda = frequencias.entrySet().stream()
+                    .filter(entry -> entry.getValue() == maiorFrequencia)
+                    .map(Map.Entry::getKey)
+                    .sorted()
+                    .findFirst()
+                    .orElse(mediana);
+        }
+
+        double variancia = valores.stream()
+                .mapToDouble(valor -> Math.pow(valor - media, 2))
+                .sum() / n;
+        double desvioPadrao = Math.sqrt(variancia);
+
+        double minimo = valores.get(0);
+        double maximo = valores.get(n - 1);
+        double amplitude = maximo - minimo;
+
+        return new EstatisticaResumo(media, mediana, moda, desvioPadrao, variancia, minimo, maximo, soma, amplitude);
+    }
+
+    private double arredondar(double valor, int casas) {
+        double fator = Math.pow(10, casas);
+        return Math.round(valor * fator) / fator;
+    }
+
+    private record EstatisticaResumo(
+            double media,
+            double mediana,
+            double moda,
+            double desvioPadrao,
+            double variancia,
+            double minimo,
+            double maximo,
+            double total,
+            double amplitude) {
     }
 }

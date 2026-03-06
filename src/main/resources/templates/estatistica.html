@@ -40,9 +40,6 @@
                 <h1 class="text-3xl font-bold text-gray-800">Estatisticas do Sistema</h1>
                 <p class="text-gray-500">Analise de dados de funcionarios, setores e movimentacoes</p>
             </div>
-            <div class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-sm">
-                50 funcionarios ativos
-            </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -51,23 +48,23 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Media salarial</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 6.890,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioMedia, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Mediana</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 5.000,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioMediana, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Moda</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 5.000,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioModa, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Desvio padrao</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 4.848,19</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioDesvioPadrao, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Variancia</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 23.504.956,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioVariancia, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                 </div>
 
@@ -75,15 +72,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Menor salario (minimo)</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 3.500,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioMinimo, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Maior salario (maximo)</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 22.000,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(salarioMaximo, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Total folha de pagamento</p>
-                        <p class="text-3xl font-bold text-gray-900">R$ 344.500,00</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|R$ ${#numbers.formatDecimal(folhaTotal, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
                     </article>
                 </div>
             </section>
@@ -93,23 +90,23 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Media de idade</p>
-                        <p class="text-3xl font-bold text-gray-900">37,6 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeMedia, 1, 'POINT', 1, 'COMMA')} anos|">0,0 anos</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Mediana</p>
-                        <p class="text-3xl font-bold text-gray-900">36,0 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeMediana, 1, 'POINT', 1, 'COMMA')} anos|">0,0 anos</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Moda</p>
-                        <p class="text-3xl font-bold text-gray-900">34 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeModa, 1, 'POINT', 0, 'COMMA')} anos|">0 anos</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Desvio padrao</p>
-                        <p class="text-3xl font-bold text-gray-900">8,4 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeDesvioPadrao, 1, 'POINT', 1, 'COMMA')} anos|">0,0 anos</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Variancia</p>
-                        <p class="text-3xl font-bold text-gray-900">70,56 anos²</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeVariancia, 1, 'POINT', 2, 'COMMA')} anos2|">0,00 anos2</p>
                     </article>
                 </div>
 
@@ -117,15 +114,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Menor idade (minimo)</p>
-                        <p class="text-3xl font-bold text-gray-900">21 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeMinima, 1, 'POINT', 0, 'COMMA')} anos|">0 anos</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Maior idade (maximo)</p>
-                        <p class="text-3xl font-bold text-gray-900">59 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeMaxima, 1, 'POINT', 0, 'COMMA')} anos|">0 anos</p>
                     </article>
                     <article class="border border-gray-200 rounded-xl p-4">
                         <p class="text-sm text-gray-500">Amplitude de idade</p>
-                        <p class="text-3xl font-bold text-gray-900">38 anos</p>
+                        <p class="text-3xl font-bold text-gray-900" th:text="|${#numbers.formatDecimal(idadeAmplitude, 1, 'POINT', 0, 'COMMA')} anos|">0 anos</p>
                     </article>
                 </div>
             </section>
