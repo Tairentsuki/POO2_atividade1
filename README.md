@@ -13,9 +13,9 @@ Trabalho desenvolvido por:
 
 abstract class Pessoa {
     - id : int
-    - nome : String
+    - nomeCompleto : String
     - cpf : String
-    - dataNascimento : LocalDate
+    - dataDeNascimento : LocalDate
     - sexo: String
 }
 
@@ -24,6 +24,7 @@ class Funcionario {
     - formacao: String
     - salarioBruto : double
     - setor : Setor
+    - dataAdmissao : LocalDate
     + calcularInss() : double
     + calcularIrpf() : double
     + calcularSalarioLiquido() : double
