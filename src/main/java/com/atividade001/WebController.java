@@ -1,25 +1,18 @@
 package com.atividade001;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.*;
+import java.util.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.atividade001.model.Funcionario;
-import com.atividade001.model.Movimentacao;
-import com.atividade001.model.Setor;
-import com.atividade001.repository.FuncionarioRepository;
-import com.atividade001.repository.MovimentacaoRepository;
-import com.atividade001.repository.SetorRepository;
+import com.atividade001.model.*;
+import com.atividade001.repository.*;
 
+/**
+ * Controlador principal das páginas HTML do sistema.
+ */
 @Controller
 public class WebController {
 
@@ -27,6 +20,13 @@ public class WebController {
     private final SetorRepository setorRepository;
     private final MovimentacaoRepository movimentacaoRepository;
 
+    /**
+     * Construtor com os repositórios usados nas telas.
+     *
+     * @param funcionarioRepository repositório de funcionários
+     * @param setorRepository repositório de setores
+     * @param movimentacaoRepository repositório de movimentações
+     */
     public WebController(
             FuncionarioRepository funcionarioRepository,
             SetorRepository setorRepository,
@@ -36,6 +36,12 @@ public class WebController {
         this.movimentacaoRepository = movimentacaoRepository;
     }
 
+    /**
+     * Exibe a página inicial com os gráficos.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping({ "/", "/index", "/graficos" })
     public String index(Model model) {
         model.addAttribute("totalFuncionarios", funcionarioRepository.count());
@@ -109,6 +115,13 @@ public class WebController {
         model.addAttribute("financeiroChartData", financeiroChartData);
         return "index";
     }
+
+    /**
+     * Exibe a tela de estatísticas.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping({ "/estatistica" })
     public String estatistica(Model model) {
         List<Funcionario> funcionarios = funcionarioRepository.findAll();
@@ -154,6 +167,12 @@ public class WebController {
     }
 
 
+    /**
+     * Exibe a listagem de funcionários.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping("/funcionarios")
     public String listFuncionarios(Model model) {
         List<Funcionario> funcionarios = funcionarioRepository.findAllComSetorOrdenados();
@@ -162,6 +181,12 @@ public class WebController {
         return "list_func";
     }
 
+    /**
+     * Exibe a listagem de pessoas.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping("/pessoas")
     public String listPessoas(Model model) {
         List<Funcionario> pessoas = funcionarioRepository.findAllComSetorOrdenados();
@@ -170,6 +195,12 @@ public class WebController {
         return "list_pessoas";
     }
 
+    /**
+     * Exibe a listagem de setores.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping({ "/setor", "/setores" })
     public String listSetores(Model model) {
         List<Setor> setores = setorRepository.findAllByOrderByNomeAsc();
@@ -178,6 +209,12 @@ public class WebController {
         return "list_setor";
     }
 
+    /**
+     * Exibe a listagem de movimentações.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping("/movimentacoes")
     public String listMovimentacoes(Model model) {
         List<Movimentacao> movimentacoes = movimentacaoRepository.findAllByOrderByDataDescIdDesc();
@@ -186,6 +223,12 @@ public class WebController {
         return "list_movimentacoes";
     }
 
+    /**
+     * Exibe a página de exemplo.
+     *
+     * @param model objeto de modelo do Spring MVC
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping({ "/exemplo", "/exemplo.html" })
     public String exemplo(Model model) {
         List<Funcionario> funcionarios = funcionarioRepository.findAllComSetorOrdenados();
@@ -194,11 +237,22 @@ public class WebController {
         return "exemplo";
     }
 
+    /**
+     * Exibe a homepage simples.
+     *
+     * @return nome do arquivo HTML a ser renderizado
+     */
     @GetMapping("/homepage")
     public String homepage() {
         return "homepage";
     }
 
+    /**
+     * Calcula resumo estatístico básico para uma lista numérica.
+     *
+     * @param valoresEntrada lista de valores
+     * @return objeto com média, mediana, moda e outros indicadores
+     */
     private EstatisticaResumo calcularResumo(List<Double> valoresEntrada) {
         if (valoresEntrada == null || valoresEntrada.isEmpty()) {
             return new EstatisticaResumo(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -243,6 +297,13 @@ public class WebController {
         return new EstatisticaResumo(media, mediana, moda, desvioPadrao, variancia, minimo, maximo, soma, amplitude);
     }
 
+    /**
+     * Arredonda um valor com a quantidade de casas desejada.
+     *
+     * @param valor número de entrada
+     * @param casas quantidade de casas decimais
+     * @return valor arredondado
+     */
     private double arredondar(double valor, int casas) {
         double fator = Math.pow(10, casas);
         return Math.round(valor * fator) / fator;

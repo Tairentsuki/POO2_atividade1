@@ -2,116 +2,117 @@ package com.atividade001.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 
+/**
+ * Classe de domínio que representa um funcionário.
+ */
+@Getter
+@Setter
 @Entity
 @Table(name = "funcionario")
+@NoArgsConstructor
 public class Funcionario extends Pessoa {
-	private double salarioBruto;
-	private String formacao;
-	@ManyToOne
-	private Setor setor;
-	private LocalDate dataAdmissao;
+    private double salarioBruto;
+    private String formacao;
 
-	public Funcionario() {
-		super();
-	}
+    @ManyToOne
+    private Setor setor;
 
-	public Funcionario(String nomeCompleto, String cpf, LocalDate dataDeNascimento, String sexo, double salarioBruto, String formacao, Setor setor, LocalDate dataAdmissao) {
-		super(nomeCompleto, cpf, dataDeNascimento, sexo);
-		this.setSalarioBruto(salarioBruto);
-		this.setFormacao(formacao);
-		this.setSetor(setor);
-		this.setDataAdmissao(dataAdmissao);
-	}
+    private LocalDate dataAdmissao;
 
-	public Funcionario(int _id, String _nome, String _cpf, LocalDate _data_nascimento, String _sexo) {
-		super(_id, _nome, _cpf, _data_nascimento, _sexo);
+    /**
+     * Constrói um funcionário sem id (uso comum na persistência).
+     *
+     * @param nomeCompleto nome completo
+     * @param cpf CPF
+     * @param dataDeNascimento data de nascimento
+     * @param sexo sexo
+     * @param salarioBruto salário bruto
+     * @param formacao formação/cargo
+     * @param setor setor do funcionário
+     * @param dataAdmissao data de admissão
+     */
+    public Funcionario(
+            String nomeCompleto,
+            String cpf,
+            LocalDate dataDeNascimento,
+            String sexo,
+            double salarioBruto,
+            String formacao,
+            Setor setor,
+            LocalDate dataAdmissao) {
+        super(nomeCompleto, cpf, dataDeNascimento, sexo);
+        this.salarioBruto = salarioBruto;
+        this.formacao = formacao;
+        this.setor = setor;
+        this.dataAdmissao = dataAdmissao;
+    }
 
-	}
+    /**
+     * Constrói funcionário com dados básicos e id.
+     *
+     * @param id identificador
+     * @param nome nome completo
+     * @param cpf CPF
+     * @param dataNascimento data de nascimento
+     * @param sexo sexo
+     */
+    public Funcionario(int id, String nome, String cpf, LocalDate dataNascimento, String sexo) {
+        super(id, nome, cpf, dataNascimento, sexo);
+    }
 
-	public Funcionario(int _id, String _nome, String _cpf, LocalDate _data_nascimento, String _sexo, double _salarioBruto, String _formacao, Setor _setor, LocalDate _dataAdmissao) {
-		super(_id, _nome, _cpf, _data_nascimento, _sexo);
-		this.setSalarioBruto(_salarioBruto);
-		this.setFormacao(_formacao);
-		this.setSetor(_setor);
-		this.setDataAdmissao(_dataAdmissao);
-	}
+    /**
+     * Constrói funcionário completo com id.
+     *
+     * @param id identificador
+     * @param nome nome completo
+     * @param cpf CPF
+     * @param dataNascimento data de nascimento
+     * @param sexo sexo
+     * @param salarioBruto salário bruto
+     * @param formacao formação/cargo
+     * @param setor setor
+     * @param dataAdmissao data de admissão
+     */
+    public Funcionario(
+            int id,
+            String nome,
+            String cpf,
+            LocalDate dataNascimento,
+            String sexo,
+            double salarioBruto,
+            String formacao,
+            Setor setor,
+            LocalDate dataAdmissao) {
+        super(id, nome, cpf, dataNascimento, sexo);
+        this.salarioBruto = salarioBruto;
+        this.formacao = formacao;
+        this.setor = setor;
+        this.dataAdmissao = dataAdmissao;
+    }
 
-	public void setSalarioBruto(double _salarioBruto) {
-		this.salarioBruto = _salarioBruto;
-	}
+    /**
+     * Converte funcionário para uma linha CSV simples.
+     *
+     * @return linha CSV com os campos principais
+     */
+    public String toCsv() {
+        String nascimento = getDataDeNascimento() != null ? getDataDeNascimento().toString() : "";
+        String setorNome = setor != null ? setor.getNome() : "";
 
-	public double getSalarioBruto() {
-		return salarioBruto;
-	}
+        return limpar(getNomeCompleto()) + "," + limpar(getCpf()) + "," + nascimento + ","
+                + limpar(getSexo()) + "," + salarioBruto + "," + limpar(formacao) + "," + limpar(setorNome);
+    }
 
-	public void setFormacao(String _formacao) {
-		this.formacao = _formacao;
-	}
-
-	public String getFormacao() {
-		return this.formacao;
-	}
-
-	public void setSetor(Setor _setor) {
-		this.setor = _setor;
-	}
-
-	public Setor getSetor() {
-		return setor;
-	}
-
-	public LocalDate getDataAdmissao() {
-		return this.dataAdmissao;
-	}
-
-	public void setDataAdmissao(LocalDate _dataAdmissao) {
-		this.dataAdmissao = _dataAdmissao;
-	}
-
-	public double calcularInss() {
-		return 0.0;
-	}
-
-	public double calcularIrpf() {
-		return 0.0;
-	}
-
-	public double calcularSalarioLiquido() {
-		return getSalarioBruto() - calcularInss() - calcularIrpf();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		String divisoria = "=".repeat(50);
-		sb.append(divisoria).append("\n");
-		sb.append("Informações do Funcionário").append("\n");
-		sb.append(divisoria).append("\n");
-		sb.append(super.toString());
-		sb.append("Salário bruto: R$ ").append(salarioBruto).append("\n");
-		sb.append("Formação: ").append(formacao).append("\n");
-		sb.append(divisoria).append("\n");
-		sb.append("Informações do Setor").append("\n");
-		sb.append(divisoria).append("\n");
-		sb.append(setor.toString()).append("\n");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toCsv() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(super.toCsv()).append(",");
-		sb.append(salarioBruto).append(",");
-		sb.append(formacao).append(",");
-		sb.append(dataAdmissao).append(",");
-		sb.append(setor.toCsv());
-
-		return sb.toString();
-	}
-
+    /**
+     * Remove vírgulas e espaços excedentes do texto.
+     *
+     * @param valor texto original
+     * @return texto limpo para CSV
+     */
+    private String limpar(String valor) {
+        return valor == null ? "" : valor.replace(",", " ").trim();
+    }
 }

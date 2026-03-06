@@ -1,6 +1,7 @@
 package com.atividade001.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.atividade001.model.Funcionario;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Integer> {
+    Optional<Funcionario> findByCpf(String cpf);
+
     @Query("select f from Funcionario f left join fetch f.setor order by f.id")
     List<Funcionario> findAllComSetorOrdenados();
 
