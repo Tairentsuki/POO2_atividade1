@@ -17,6 +17,8 @@ abstract class Pessoa {
     - cpf : String
     - dataDeNascimento : LocalDate
     - sexo: String
+    + calcularIdade() : int
+
 }
 
 class Funcionario {
@@ -25,9 +27,6 @@ class Funcionario {
     - salarioBruto : double
     - setor : Setor
     - dataAdmissao : LocalDate
-    + calcularInss() : double
-    + calcularIrpf() : double
-    + calcularSalarioLiquido() : double
 }
 
 class Setor {
