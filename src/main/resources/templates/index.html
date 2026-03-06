@@ -15,13 +15,13 @@
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2">
             <a th:href="@{/graficos}" class="block px-4 py-3 bg-blue-600 rounded-lg font-medium transition hover:bg-blue-500">
-                Graficos
+                Gráficos
             </a>
-              <a th:href="@{/estatistica}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
-                Estatistica
+            <a th:href="@{/estatistica}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
+                Estatística
             </a>
             <a th:href="@{/funcionarios}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
-                Listar Funcionarios
+                Listar Funcionários
             </a>
             <a th:href="@{/pessoas}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
                 Listar Pessoas
@@ -30,24 +30,17 @@
                 Listar Setores
             </a>
             <a th:href="@{/movimentacoes}" class="block px-4 py-3 rounded-lg font-medium transition hover:bg-slate-700">
-                Listar Movimentacoes
+                Listar Movimentações
             </a>
         </nav>
     </aside>
 
     <main class="flex-1 p-8 overflow-y-auto">
-        <header class="mb-8 flex items-start justify-between gap-4">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-800">Estatisticas do Sistema</h1>
-                <p class="text-gray-500">Analise de dados de funcionarios, setores e movimentacoes</p>
-            </div>
-            <div class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-sm">
-                50 funcionarios ativos
-            </div>
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Gestão - Gráficos</h1>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
                 <div id="grafico_setores" class="w-full h-80"></div>
             </div>
@@ -65,125 +58,137 @@
             </div>
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
-                <div id="grafico_salario_sexo" class="w-full h-80"></div>
-            </div>
-
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
                 <div id="grafico_financeiro" class="w-full h-80"></div>
             </div>
         </div>
     </main>
 
-    <script>
+    <script th:inline="javascript">
         google.charts.load('current', { packages: ['corechart', 'bar'] });
         google.charts.setOnLoadCallback(desenharGraficos);
 
         function desenharGraficos() {
-            const dataSetores = google.visualization.arrayToDataTable([
-                ['Setor', 'Qtd de Funcionarios'],
-                ['Desenvolvimento', 15],
-                ['Recursos Humanos', 3],
-                ['Financeiro', 5],
-                ['Suporte', 8]
-            ]);
-
-            const optionsSetores = {
-                title: 'Distribuicao de Funcionarios por Setor',
-                pieHole: 0.4,
-                colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
-                chartArea: { width: '85%', height: '80%' }
-            };
-            new google.visualization.PieChart(document.getElementById('grafico_setores')).draw(dataSetores, optionsSetores);
-
-            const dataSalarios = google.visualization.arrayToDataTable([
-                ['Setor', 'Salario Bruto Medio (R$)'],
-                ['Desenvolvimento', 8500.00],
-                ['RH', 4200.00],
-                ['Financeiro', 6100.00],
-                ['Suporte', 3500.00]
-            ]);
-
-            const optionsSalarios = {
-                title: 'Media de Salario Bruto por Setor',
-                colors: ['#6366f1'],
-                legend: { position: 'none' },
-                vAxis: { format: 'currency' }
-            };
-            new google.visualization.ColumnChart(document.getElementById('grafico_salarios')).draw(dataSalarios, optionsSalarios);
-
-            const dataAdmissoes = google.visualization.arrayToDataTable([
-                ['Ano', 'Novas Admissoes'],
-                ['2022', 4],
-                ['2023', 12],
-                ['2024', 8],
-                ['2025', 10],
-                ['2026', 6]
-            ]);
-
-            const optionsAdmissoes = {
-                title: 'Historico de Admissoes (ultimos 5 anos)',
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                colors: ['#0ea5e9'],
-                pointSize: 5
-            };
-            new google.visualization.LineChart(document.getElementById('grafico_crescimento')).draw(dataAdmissoes, optionsAdmissoes);
-
-            const dataSexo = google.visualization.arrayToDataTable([
-                ['Sexo', 'Quantidade', { role: 'style' }],
-                ['Feminino', 14, '#ec4899'],
-                ['Masculino', 16, '#3b82f6'],
-                ['Outros', 1, '#8b5cf6']
-            ]);
-
-            const optionsSexo = {
-                title: 'Perfil Demografico (Sexo)',
-                legend: { position: 'none' },
-                hAxis: { title: 'Quantidade de Pessoas' }
-            };
-            new google.visualization.BarChart(document.getElementById('grafico_genero')).draw(dataSexo, optionsSexo);
-
-            const dataSalarioSexo = google.visualization.arrayToDataTable([
-                ['Sexo', 'Salario Bruto Medio', { role: 'style' }],
-                ['Masculino', 7120.00, '#3b82f6'],
-                ['Feminino', 6890.00, '#ec4899']
-            ]);
-
-            const optionsSalarioSexo = {
-                title: 'Comparacao de Salario Bruto Medio por Sexo',
-                legend: { position: 'none' },
-                hAxis: { title: 'Salario Bruto Medio (R$)' }
-            };
-            new google.visualization.BarChart(document.getElementById('grafico_salario_sexo')).draw(dataSalarioSexo, optionsSalarioSexo);
-
-            const dataFinanceiro = google.visualization.arrayToDataTable([
-                ['Setor', 'Receitas', 'Despesas'],
-                ['Tecnologia', 150000, 85000],
-                ['Recursos Humanos', 0, 42000],
-                ['Vendas', 280000, 95000],
-                ['Administrativo', 12000, 38000]
-            ]);
-
-            const optionsFinanceiro = {
-                chart: {
-                    title: 'Balanco Financeiro por Setor',
-                    subtitle: 'Receitas a esquerda, despesas a direita (em reais)'
-                },
-                bars: 'horizontal',
-                colors: ['#10b981', '#ef4444'],
-                series: {
-                    0: { axis: 'receitas' },
-                    1: { axis: 'despesas' }
-                },
-                axes: {
-                    x: {
-                        receitas: { side: 'bottom', label: 'Receitas (R$)' },
-                        despesas: { side: 'top', label: 'Despesas (R$)' }
-                    }
+            try {
+                const setoresDoBanco = /*[[${setoresChartData}]]*/ [];
+                const linhasSetores = [ ['Setor', 'Qtd de Funcionarios'] ];
+                if (Array.isArray(setoresDoBanco) && setoresDoBanco.length > 0) {
+                    setoresDoBanco.forEach(row => linhasSetores.push([String(row[0]), Number(row[1])]));
+                } else {
+                    linhasSetores.push(['Sem dados', 0]);
                 }
-            };
-            new google.charts.Bar(document.getElementById('grafico_financeiro'))
-                .draw(dataFinanceiro, google.charts.Bar.convertOptions(optionsFinanceiro));
+                const dataSetores = google.visualization.arrayToDataTable(linhasSetores);
+                const optionsSetores = {
+                    title: 'Distribuicao de Funcionarios por Setor',
+                    pieHole: 0.4,
+                    colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                    chartArea: { width: '85%', height: '80%' }
+                };
+                new google.visualization.PieChart(document.getElementById('grafico_setores')).draw(dataSetores, optionsSetores);
+            } catch (e) {
+                console.error('Erro no grafico_setores:', e);
+            }
+
+            try {
+                const salariosDoBanco = /*[[${salariosChartData}]]*/ [];
+                const linhasSalarios = [ ['Setor', 'Salário Bruto Médio (R$)'] ];
+                if (Array.isArray(salariosDoBanco) && salariosDoBanco.length > 0) {
+                    salariosDoBanco.forEach(row => linhasSalarios.push([String(row[0]), Number(row[1])]));
+                } else {
+                    linhasSalarios.push(['Sem dados', 0]);
+                }
+                const dataSalarios = google.visualization.arrayToDataTable(linhasSalarios);
+                const optionsSalarios = {
+                    title: 'Média de Salario Bruto por Setor',
+                    colors: ['#6366f1'],
+                    legend: { position: 'none' },
+                    vAxis: { format: 'currency' }
+                };
+                new google.visualization.ColumnChart(document.getElementById('grafico_salarios')).draw(dataSalarios, optionsSalarios);
+            } catch (e) {
+                console.error('Erro no grafico_salarios:', e);
+            }
+
+            try {
+                const admissoesDoBanco = /*[[${admissoesChartData}]]*/ [];
+                const linhasAdmissoes = [ ['Ano', 'Novas Admissoes'] ];
+                if (Array.isArray(admissoesDoBanco) && admissoesDoBanco.length > 0) {
+                    admissoesDoBanco.forEach(row => linhasAdmissoes.push([String(row[0]), Number(row[1])]));
+                } else {
+                    linhasAdmissoes.push(['Sem dados', 0]);
+                }
+                const dataAdmissoes = google.visualization.arrayToDataTable(linhasAdmissoes);
+                const optionsAdmissoes = {
+                    title: 'Histórico de Admissôes Anual',
+                    curveType: 'function',
+                    legend: { position: 'bottom' },
+                    colors: ['#0ea5e9'],
+                    pointSize: 5
+                };
+                new google.visualization.LineChart(document.getElementById('grafico_crescimento')).draw(dataAdmissoes, optionsAdmissoes);
+            } catch (e) {
+                console.error('Erro no grafico_crescimento:', e);
+            }
+
+            try {
+                const generoDoBanco = /*[[${generoChartData}]]*/ [];
+                const linhasSexo = [ ['Sexo', 'Quantidade', { role: 'style' }] ];
+                const corPorSexo = {
+                    feminino: '#ec4899',
+                    masculino: '#3b82f6',
+                    'nao informado': '#8b5cf6'
+                };
+                if (Array.isArray(generoDoBanco) && generoDoBanco.length > 0) {
+                    generoDoBanco.forEach(row => {
+                        const sexo = String(row[0]);
+                        const chave = sexo.toLowerCase();
+                        const cor = corPorSexo[chave] || '#64748b';
+                        linhasSexo.push([sexo, Number(row[1]), cor]);
+                    });
+                } else {
+                    linhasSexo.push(['Sem dados', 0, '#64748b']);
+                }
+                const dataSexo = google.visualization.arrayToDataTable(linhasSexo);
+                const optionsSexo = {
+                    title: 'Perfil Demográfico (Sexo)',
+                    legend: { position: 'none' },
+                    hAxis: { title: 'Quantidade de Pessoas' }
+                };
+                new google.visualization.BarChart(document.getElementById('grafico_genero')).draw(dataSexo, optionsSexo);
+            } catch (e) {
+                console.error('Erro no grafico_genero:', e);
+            }
+
+            try {
+                const financeiroDoBanco = /*[[${financeiroChartData}]]*/ [];
+                const linhasFinanceiro = [ ['Setor', 'Receitas', 'Despesas'] ];
+                if (Array.isArray(financeiroDoBanco) && financeiroDoBanco.length > 0) {
+                    financeiroDoBanco.forEach(row => linhasFinanceiro.push([String(row[0]), Number(row[1]), Number(row[2])]));
+                } else {
+                    linhasFinanceiro.push(['Sem dados', 0, 0]);
+                }
+                const dataFinanceiro = google.visualization.arrayToDataTable(linhasFinanceiro);
+                const optionsFinanceiro = {
+                    chart: {
+                        title: 'Receita x Despesa por Setor',
+                    },
+                    bars: 'horizontal',
+                    colors: ['#10b981', '#ef4444'],
+                    series: {
+                        0: { axis: 'receitas' },
+                        1: { axis: 'despesas' }
+                    },
+                    axes: {
+                        x: {
+                            receitas: { side: 'bottom', label: 'Receitas (R$)' },
+                            despesas: { side: 'top', label: 'Despesas (R$)' }
+                        }
+                    }
+                };
+                new google.charts.Bar(document.getElementById('grafico_financeiro'))
+                    .draw(dataFinanceiro, google.charts.Bar.convertOptions(optionsFinanceiro));
+            } catch (e) {
+                console.error('Erro no grafico_financeiro:', e);
+            }
         }
 
         window.addEventListener('resize', desenharGraficos);

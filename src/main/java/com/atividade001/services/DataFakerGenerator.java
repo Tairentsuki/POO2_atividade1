@@ -22,6 +22,7 @@ import net.datafaker.Faker;
 
 public class DataFakerGenerator {
     private static final Faker faker = new Faker(Locale.forLanguageTag("pt-BR"));
+    private static final String[] SETORES_FIXOS = { "TI", "Markting", "RH", "Vendas", "Financeiro" };
 
     private static int contadorFuncionario = 1;
     private static int contadorSetor = 1;
@@ -59,6 +60,7 @@ public class DataFakerGenerator {
         String areaAtuacao = faker.job().field();
         String posicao = faker.job().position();
         String formacao = posicao + " de " + areaAtuacao;
+        String nomeSetor = sortearSetorPorFaixa();
         double salarioBruto = gerarSalarioBruto(formacao);
 
         boolean isMasculino = faker.bool().bool();
@@ -73,10 +75,10 @@ public class DataFakerGenerator {
         if (incluirIds) {
             int proximoSetor = contadorSetor++;
             String ramal = String.valueOf(proximoSetor % 9000 + 1000);
-            setor = new Setor(proximoSetor, areaAtuacao, ramal);
+            setor = new Setor(proximoSetor, nomeSetor, ramal);
         } else {
             String ramal = String.valueOf(faker.number().numberBetween(1000, 10000));
-            setor = new Setor(areaAtuacao, ramal);
+            setor = new Setor(nomeSetor, ramal);
         }
 
         if (incluirIds) {
@@ -249,6 +251,23 @@ public class DataFakerGenerator {
         double salarioBase = faker.number().randomDouble(2, 1412, 6000);
         double multiplicador = calcularMultiplicador(formacao);
         return Math.round((salarioBase * multiplicador) * 100.0) / 100.0;
+    }
+
+    private static String sortearSetorPorFaixa() {
+        int faixa = randomEntre(0, 99);
+        if (faixa < 20) {
+            return SETORES_FIXOS[0];
+        }
+        if (faixa < 40) {
+            return SETORES_FIXOS[1];
+        }
+        if (faixa < 60) {
+            return SETORES_FIXOS[2];
+        }
+        if (faixa < 80) {
+            return SETORES_FIXOS[3];
+        }
+        return SETORES_FIXOS[4];
     }
 
     private static LocalDate gerarDataAdmissao(LocalDate dataNascimento) {
